@@ -30,7 +30,7 @@ jobs:
 
       - name: Setup | Activate Virtual Environment
         run: |
-          ./Backend/.venv/bin/activate
+          source ./Backend/.venv/bin/activate
           echo PATH=$PATH >> $GITHUB_ENV
 
       - name: Action | Lint Markdown files
