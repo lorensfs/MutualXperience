@@ -41,20 +41,18 @@ jobs:
             **/*.md
 
       - name: Action | Lint
-        run: ruff check --fix ./Backend/app ./Backend/app/tests
-
+        run: ruff check --fix ./Backend/app
       - name: Action | Sort Imports
-        run: ruff check --select I --fix ./Backend/app ./Backend/app/tests
+        run: ruff check --select I --fix ./Backend/app
 
       - name: Action | Format Code
-        run: ruff format ./Backend/app ./Backend/app/tests
+        run: ruff format ./Backend/app
 
       - name: Action | Check Static Typing
-        run: mypy --strict --explicit-package-bases ./Backend/app ./Backend/app/tests
-
+        run: mypy --strict --explicit-package-bases ./Backend/app
       - name: Action | Build Coverage File
         run: |
-          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=./Backend/app ./Backend/app/tests | tee pytest-coverage.txt
+          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=./Backend/app | tee pytest-coverage.txt
 
       - name: Action | Pytest Coverage Comment
         if: ${{github.event_name == 'pull_request'}}
