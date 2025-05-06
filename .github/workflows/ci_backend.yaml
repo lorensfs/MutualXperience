@@ -24,7 +24,9 @@ jobs:
           version: "latest"
 
       - name: Setup | Install Project Dependencies
-        run: uv sync --only-dev
+        run: |
+          cd ./Backend
+          uv sync --only-dev
 
       - name: Setup | Activate Virtual Environment
         run: |
