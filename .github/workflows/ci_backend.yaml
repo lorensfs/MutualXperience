@@ -37,6 +37,7 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v13
         with:
           globs: |
+            fix: true
             **/*.md
 
       - name: Action | Lint
