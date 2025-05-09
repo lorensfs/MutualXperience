@@ -1,17 +1,45 @@
-from datetime import datetime, timedelta
-from typing import Union
-from jose import jwt, JWTError
+from datetime import datetime, timedelta, timezone
+
+import bcrypt
+import jwt
+from fastapi.security import OAuth2PasswordBearer
+
 from app.core.config import settings
+# from app.core.helper.scopes import get_scopes_from_db
+from app.database.session import SessionLocal
 
-def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
-    to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=30))
-    to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, settings.secret_key, algorithm=settings.jwt_algorithm)
 
-def verify_token(token: str):
+def get_oauth2_scheme():
+    session = SessionLocal()
     try:
-        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.jwt_algorithm])
-        return payload
-    except JWTError:
-        return None
+        # scopes = get_scopes_from_db(session)
+        return OAuth2PasswordBearer(
+            tokenUrl=f"{settings.API_V1_STR}/login", #scopes=scopes
+        )
+    finally:
+        session.close()
+
+
+oauth2_scheme = get_oauth2_scheme()
+
+
+def create_access_token(data: dict, expires_delta: timedelta) -> str:
+    to_encode = data.copy()
+    expire = datetime.now(timezone.utc) + expires_delta
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(
+        to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM
+    )
+    return encoded_jwt
+
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    password_bytes_encoded = plain_password.encode("utf-8")
+    return bcrypt.checkpw(password_bytes_encoded, hashed_password.encode("utf-8"))
+
+
+def hash_password(password: str) -> str:
+    pwd_bytes = password.encode("utf-8")
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password=pwd_bytes, salt=salt)
+    return hashed_password.decode("utf-8")
