@@ -33,7 +33,7 @@ strict = true
 exclude = ["venv", ".venv"]
 
 [tool.ruff]
-target-version = "py313"
+target-version = "py312"
 
 # Same as Black.
 line-length = 88
