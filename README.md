@@ -14,7 +14,7 @@ ENVIRONMENT=local
 PROJECT_NAME=MutualXPerience
 PROJECT_VERSION=0.1.0
 API_V1_STR=/v1
-BACKEND_CORS_ORIGINS=http://localhost:8000
+BACKEND_CORS_ORIGINS=[http://localhost:8000]
 FRONTEND_HOST=http://localhost:5173
 LOG_LEVEL=DEBUG
 
@@ -52,3 +52,23 @@ uv pip install -r requirements.txt
 ```bash
 PYTHONPATH=./ uvicorn app.main:app --reload
 ```
+
+### 🛠️ PostgreSQL Setup Process
+
+To run the backend, you need PostgreSQL installed on your system. You can:
+
+- Install PostgreSQL directly on your machine from [https://www.postgresql.org/download/](https://www.postgresql.org/download/), or
+- Use Docker to run a PostgreSQL container:
+
+```bash
+docker run --name mutualxperience-db -e POSTGRES_USER=admin \
+  -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=mutualxperience_local \
+  -p 5432:5432 -d postgres
+```
+
+> 📌 **Important:** You do **not** need to manually create the database schema or initial superuser.
+
+- When the backend starts, it **automatically creates** the database schema using SQLModel and Alembic if it doesn't already exist.
+- It also creates the **first superuser** based on the credentials defined in your `.env` file, so you can log in immediately after startup.
+
+No extra setup steps are needed beyond ensuring that the PostgreSQL engine is running and accessible.

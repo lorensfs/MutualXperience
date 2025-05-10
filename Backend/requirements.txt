@@ -1,7 +1,7 @@
 alembic==1.15.2
 annotated-types==0.7.0
 anyio==4.9.0
--e file:///home/mlang/PycharmProjects/MutualXperience/Backend
+-e .
 bcrypt==4.3.0
 certifi==2025.4.26
 cfgv==3.4.0
@@ -60,7 +60,6 @@ types-passlib==1.7.7.20250408
 typing-extensions==4.13.2
 typing-inspection==0.4.0
 uvicorn==0.34.2
-uvloop==0.21.0
 virtualenv==20.31.1
 watchfiles==1.0.5
 websockets==15.0.1
